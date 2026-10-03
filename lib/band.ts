@@ -1,0 +1,4 @@
+export type Expert={role:string;label:string;id:string;key:string;zoo:string};
+export function experts():Expert[]{const v=JSON.parse(process.env.BAND_AGENTS||'[]');if(v.length!==6)throw new Error('The BAND expert council is not configured.');return v;}
+export async function band(path:string,key:string,body?:unknown){const r=await fetch('https://api.band.ai/api/v1/'+path,{method:body===undefined?'GET':'POST',headers:{'X-API-Key':key,'Content-Type':'application/json'},body:body===undefined?undefined:JSON.stringify(body),signal:AbortSignal.timeout(20000)});const v:any=await r.json();if(!r.ok)throw new Error('BAND '+(v.error?.message||'could not complete this step')+' ('+r.status+')');return v.data;}
+export async function message(room:string,sender:Expert,recipients:Expert[],content:string){return band(`agent/chats/${room}/messages`,sender.key,{message:{content,mentions:recipients.map(a=>({id:a.id,name:'FindWise '+a.label}))}});}
