@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="light dark" />
+  <link rel="icon" href="data:," />
+  <title>Taste OS Pitch Deck</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+    :root {
+      color-scheme: light dark;
+      --bg:#0b0f14; --bg2:#0e151d; --surface:rgba(19,29,40,.84); --surface-2:#14202b;
+      --text:#f4fbff; --muted:#a8bac6; --line:rgba(149,215,235,.17); --grid:rgba(91,231,255,.045);
+      --cyan:#5be7ff; --cyan-bright:#8df0ff; --violet:#9a7cff; --green:#4ade80; --red:#ff6975;
+      --amber:#f6bf61; --shadow:0 22px 65px rgba(0,0,0,.34); --glow:rgba(91,231,255,.22);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg:#070b10; --bg2:#0b1118; --surface:rgba(15,23,32,.82); --surface-2:#101922;
+        --text:#f2f8fb; --muted:#9eb0bd; --line:rgba(170,213,231,.14); --grid:rgba(91,231,255,.035);
+        --cyan:#5be7ff; --cyan-bright:#89efff; --violet:#9c83ff; --green:#4ade80; --red:#ff6975;
+        --amber:#f6bf61; --shadow:0 24px 75px rgba(0,0,0,.42); --glow:rgba(91,231,255,.2);
+      }
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;min-height:100%;overflow:hidden;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text)}
+    body{background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:34px 34px}
+    button,input{font:inherit}
+    button{color:inherit}
+    .deck{height:100dvh;position:relative;overflow:hidden}
+    .deck:before{content:"";position:absolute;inset:-35%;background:radial-gradient(circle at 28% 28%,var(--glow),transparent 25%),radial-gradient(circle at 72% 70%,rgba(109,79,211,.14),transparent 24%);pointer-events:none;animation:drift 14s ease-in-out infinite alternate}
+    @keyframes drift{to{transform:translate3d(3%,2%,0) rotate(4deg)}}
+    .slide{position:absolute;inset:0;display:grid;place-items:center;padding:clamp(30px,5vw,72px) clamp(24px,6vw,100px) 90px;opacity:0;transform:translateX(5%) scale(.985);pointer-events:none;transition:opacity .45s ease,transform .55s cubic-bezier(.2,.75,.2,1)}
+    .slide.active{opacity:1;transform:none;pointer-events:auto;z-index:2}
+    .slide.before{transform:translateX(-5%) scale(.985)}
+    .frame{width:min(1180px,100%);max-height:100%;position:relative}
+    .eyebrow{font:600 12px/1 'IBM Plex Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan);margin-bottom:16px}
+    h1,h2,h3,p{margin-top:0}
+    h1{font-size:clamp(54px,10vw,132px);line-height:.85;letter-spacing:-.075em;margin-bottom:30px}
+    h2{font-size:clamp(36px,5.6vw,76px);line-height:.98;letter-spacing:-.055em;margin-bottom:26px;max-width:990px}
+    h3{font-size:clamp(18px,2vw,25px);line-height:1.15;letter-spacing:-.02em}
+    .lead{font-size:clamp(20px,2.4vw,34px);line-height:1.35;color:var(--muted);max-width:820px}
+    .accent{color:var(--cyan)} .violet{color:var(--violet)} .green{color:var(--green)} .red{color:var(--red)}
+    .mono{font-family:'IBM Plex Mono',monospace}
+    .glass{background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+    .topline{display:flex;justify-content:space-between;align-items:center;margin-bottom:clamp(22px,4vw,48px)}
+    .level{font:600 12px/1 'IBM Plex Mono',monospace;color:var(--muted)}
+    .level b{color:var(--cyan)}
+    .stars{letter-spacing:.18em;color:var(--cyan)}
+
+    /* controls */
+    .controls{position:fixed;z-index:20;left:50%;bottom:max(18px,env(safe-area-inset-bottom));transform:translateX(-50%);display:flex;align-items:center;gap:8px;padding:7px;border-radius:18px;background:var(--surface);border:1px solid var(--line);box-shadow:0 10px 35px rgba(0,0,0,.2);backdrop-filter:blur(18px)}
+    .navbtn{width:42px;height:42px;border:0;border-radius:12px;background:transparent;display:grid;place-items:center;cursor:pointer}
+    .navbtn:hover,.navbtn:focus-visible{background:var(--surface-2);outline:1px solid var(--line)}
+    .navbtn:disabled{opacity:.32;cursor:not-allowed}
+    .navbtn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2}
+    .dots{display:flex;gap:5px;align-items:center;padding:0 8px}
+    .dot{width:6px;height:6px;border:0;padding:0;border-radius:999px;background:var(--muted);opacity:.35;cursor:pointer;transition:.25s}
+    .dot.active{width:24px;opacity:1;background:var(--cyan)}
+    .counter{position:fixed;right:clamp(16px,3vw,38px);top:clamp(16px,3vw,34px);z-index:10;font:600 12px/1 'IBM Plex Mono',monospace;color:var(--muted)}
+
+    /* slide 1 */
+    .hero-copy{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:60px;align-items:end}
+    .hero-line{font-size:clamp(24px,3.7vw,52px);line-height:1.1;letter-spacing:-.045em;font-weight:500;max-width:870px;margin:0}
+    .hero-line span{display:block;color:var(--muted)}
+    .crystal{width:250px;aspect-ratio:1;position:relative;display:grid;place-items:center;filter:drop-shadow(0 0 34px var(--glow))}
+    .crystal svg{width:100%;height:100%}
+    .crystal .orbit{position:absolute;inset:9%;border:1px solid var(--line);border-radius:50%;animation:spin 8s linear infinite}
+    .crystal .orbit:after{content:"";position:absolute;width:10px;height:10px;background:var(--cyan);border-radius:50%;top:12%;left:12%;box-shadow:0 0 18px var(--cyan)}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .sponsors{display:flex;gap:18px;flex-wrap:wrap;margin-top:50px;color:var(--muted);font:600 12px/1 'IBM Plex Mono',monospace;letter-spacing:.08em}
+    .sponsors span:not(:last-child):after{content:'×';margin-left:18px;color:var(--line)}
+
+    /* slide 2 */
+    .filter-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:30px}
+    .filter-card{padding:20px;border-radius:18px;border:1px solid var(--line);background:var(--surface);position:relative;overflow:hidden}
+    .filter-card:after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--red);opacity:.72}
+    .filter-icon{width:36px;height:36px;border-radius:11px;border:1px solid var(--line);display:grid;place-items:center;color:var(--muted);margin-bottom:28px}
+    .filter-icon svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.8}
+    .filter-card h3{margin-bottom:18px}.filter-row{height:8px;background:var(--line);border-radius:5px;margin:10px 0}.filter-row:nth-child(2n){width:66%}
+    .verdict{display:flex;justify-content:flex-end;align-items:center;gap:18px;margin-top:30px;font-size:clamp(25px,3vw,42px);font-weight:600;letter-spacing:-.04em}.xmark{width:48px;height:48px;border:1px solid color-mix(in srgb,var(--red) 55%,transparent);border-radius:50%;display:grid;place-items:center;color:var(--red)}
+
+    /* profile */
+    .profile-layout{display:grid;grid-template-columns:1.08fr .92fr;gap:30px}
+    .profile-card{padding:clamp(24px,3vw,38px);border-radius:28px}
+    .profile-head{display:flex;justify-content:space-between;gap:20px;align-items:start;padding-bottom:24px;border-bottom:1px solid var(--line)}
+    .taste-score{font-size:60px;line-height:.8;font-weight:700;letter-spacing:-.07em;color:var(--cyan)}
+    .taste-score small{font:600 11px/1 'IBM Plex Mono',monospace;color:var(--muted);letter-spacing:.08em;display:block;margin-top:12px}
+    .stat{display:grid;grid-template-columns:108px 1fr 30px;gap:12px;align-items:center;margin-top:17px;font-size:13px}
+    .stat-track{height:8px;border-radius:10px;background:var(--line);overflow:hidden}.stat-fill{height:100%;width:var(--w);background:linear-gradient(90deg,var(--cyan),var(--violet));border-radius:inherit;animation:levelup .9s both}.stat-value{text-align:right;font:600 11px 'IBM Plex Mono',monospace;color:var(--muted)}
+    @keyframes levelup{from{width:0}}
+    .memory-panel{padding:30px;border-radius:28px;display:flex;flex-direction:column;justify-content:space-between}
+    .brands{display:flex;flex-wrap:wrap;gap:10px}.brand{border:1px solid var(--line);background:var(--surface-2);padding:11px 14px;border-radius:12px;font:600 13px 'IBM Plex Mono',monospace;cursor:pointer}.brand:before{content:'✓';color:var(--green);margin-right:9px}.brand.off{opacity:.45;text-decoration:line-through}.brand.off:before{content:'×';color:var(--red)}
+    .unlock{margin-top:30px;padding:17px;border:1px solid color-mix(in srgb,var(--green) 45%,transparent);background:color-mix(in srgb,var(--green) 8%,transparent);border-radius:16px;color:var(--green);font:600 13px 'IBM Plex Mono',monospace;display:flex;align-items:center;gap:12px}.pulse{width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 color-mix(in srgb,var(--green) 40%,transparent);animation:pulse 1.7s infinite}@keyframes pulse{60%{box-shadow:0 0 0 10px transparent}}
+
+    /* criteria */
+    .query{padding:17px 20px;border-radius:16px;display:flex;align-items:center;gap:13px;font:500 clamp(15px,2vw,20px) 'IBM Plex Mono',monospace;margin:18px 0 28px}.cursor{width:2px;height:1.2em;background:var(--cyan);animation:blink 1s steps(1) infinite}@keyframes blink{50%{opacity:0}}
+    .signal-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.signal{min-height:110px;padding:16px;border:1px solid var(--line);background:var(--surface);border-radius:17px;cursor:pointer;text-align:left;display:flex;flex-direction:column;justify-content:space-between;transition:.2s}.signal:hover{border-color:var(--cyan);transform:translateY(-2px)}.signal.selected{border-color:var(--cyan);background:color-mix(in srgb,var(--cyan) 9%,var(--surface));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--cyan) 30%,transparent)}.signal .num{font:600 10px 'IBM Plex Mono',monospace;color:var(--muted)}.signal b{font-size:14px}.signal .check{align-self:flex-end;width:20px;height:20px;border:1px solid var(--line);border-radius:7px;display:grid;place-items:center;color:transparent}.signal.selected .check{background:var(--cyan);color:var(--bg);border-color:var(--cyan)}
+    .selection-status{margin-top:14px;font:600 11px 'IBM Plex Mono',monospace;color:var(--muted);text-align:right}
+
+    /* council */
+    .council{display:grid;grid-template-columns:.75fr 1.25fr;gap:24px}.agent-list{padding:20px;border-radius:24px}.agent{display:flex;align-items:center;gap:12px;padding:13px 8px;border-bottom:1px solid var(--line)}.agent:last-child{border:0}.avatar{width:38px;height:38px;border-radius:12px;background:color-mix(in srgb,var(--agent) 14%,transparent);border:1px solid color-mix(in srgb,var(--agent) 40%,transparent);display:grid;place-items:center;color:var(--agent)}.avatar svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.8}.agent-info{flex:1}.agent-name{font-size:13px;font-weight:700}.thinking{font:500 10px 'IBM Plex Mono',monospace;color:var(--muted);margin-top:4px}.thinking:after{content:'...';display:inline-block;width:1.4em;overflow:hidden;vertical-align:bottom;animation:dots 1.2s steps(4,end) infinite}@keyframes dots{from{width:0}}
+    .chat{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-content:center}.bubble{padding:18px;border-radius:18px;background:var(--surface);border:1px solid var(--line);font-size:clamp(14px,1.5vw,18px);line-height:1.38;position:relative}.bubble small{display:block;color:var(--muted);font:600 10px 'IBM Plex Mono',monospace;margin-bottom:9px}.bubble strong{color:var(--cyan)}
+
+    /* leaderboard */
+    .battle{display:grid;grid-template-columns:1fr .85fr;gap:26px}.board{padding:18px;border-radius:25px}.rank-row{display:grid;grid-template-columns:35px minmax(0,1fr) 54px;gap:12px;align-items:center;padding:18px 14px;border-radius:15px}.rank-row + .rank-row{border-top:1px solid var(--line)}.rank-row:first-child{background:color-mix(in srgb,var(--cyan) 8%,transparent);border:1px solid color-mix(in srgb,var(--cyan) 28%,transparent)}.rank{font:600 13px 'IBM Plex Mono',monospace;color:var(--muted)}.product{font-size:17px;font-weight:700}.product small{display:block;font:500 10px 'IBM Plex Mono',monospace;color:var(--muted);margin-top:5px}.score{font:700 30px/1 'IBM Plex Mono',monospace;text-align:right;color:var(--cyan)}
+    .boss-card{padding:26px;border-radius:25px}.radar{display:block;width:min(270px,80%);margin:0 auto 12px;overflow:visible}.radar .gridpoly{fill:none;stroke:var(--line);stroke-width:1}.radar .axis{stroke:var(--line)}.radar .data{fill:color-mix(in srgb,var(--cyan) 20%,transparent);stroke:var(--cyan);stroke-width:2}.reason{display:grid;grid-template-columns:22px 1fr;gap:8px;font-size:13px;margin-top:10px}.reason.plus span:first-child{color:var(--green)}.reason.minus span:first-child{color:var(--amber)}
+
+    /* magic */
+    .magic-layout{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}.domain-shift{position:relative;height:330px}.search-card{position:absolute;width:82%;padding:26px;border-radius:24px}.search-card.backpack{top:0;left:0;opacity:.35;transform:scale(.88)}.search-card.hotel{bottom:0;right:0;border-color:color-mix(in srgb,var(--cyan) 40%,transparent)}.search-type{font:600 10px 'IBM Plex Mono',monospace;color:var(--muted);text-transform:uppercase;letter-spacing:.14em;margin-bottom:15px}.search-text{font-size:clamp(19px,2vw,27px);font-weight:600;letter-spacing:-.03em}.memory-chips{display:flex;flex-wrap:wrap;gap:9px;margin-top:18px}.chip{padding:8px 10px;background:color-mix(in srgb,var(--cyan) 8%,transparent);border:1px solid color-mix(in srgb,var(--cyan) 25%,transparent);border-radius:10px;font:600 10px 'IBM Plex Mono',monospace;color:var(--cyan)}.magic-copy .lead{font-size:clamp(18px,2vw,28px)}.zero-list{list-style:none;padding:0;margin:26px 0 0;display:grid;gap:12px}.zero-list li{display:flex;gap:11px;align-items:center;color:var(--muted);font-size:15px}.zero-list li:before{content:'✓';color:var(--green);font-weight:700}
+
+    /* slider */
+    .trade-layout{display:grid;grid-template-columns:.85fr 1.15fr;gap:35px}.trade-panel{padding:30px;border-radius:25px}.trade-labels{display:flex;justify-content:space-between;font:600 11px 'IBM Plex Mono',monospace;color:var(--muted);margin-bottom:14px}.range{width:100%;accent-color:var(--cyan);cursor:grab}.range::-webkit-slider-runnable-track{height:8px;background:linear-gradient(90deg,var(--violet),var(--cyan));border-radius:10px}.range::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:var(--text);border:5px solid var(--cyan);margin-top:-8px;box-shadow:0 0 20px var(--glow)}.trade-readout{font-size:clamp(45px,6vw,76px);font-weight:700;letter-spacing:-.07em;margin:28px 0 6px;color:var(--cyan)}.board.live .rank-row{transition:transform .35s ease,background .35s ease}.live-score{font:700 27px 'IBM Plex Mono',monospace;color:var(--cyan);text-align:right}
+
+    /* architecture */
+    .architecture{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;align-items:center;margin-top:40px}.arch-node{padding:22px 10px;text-align:center;border:1px solid var(--line);background:var(--surface);border-radius:17px;min-height:126px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative}.arch-node:not(:last-child):after{content:'›';position:absolute;right:-12px;z-index:2;color:var(--cyan);font-size:24px}.arch-node svg{width:26px;height:26px;fill:none;stroke:var(--cyan);stroke-width:1.7;margin-bottom:14px}.arch-node b{font-size:13px}.arch-node small{font:500 9px 'IBM Plex Mono',monospace;color:var(--muted);margin-top:7px}.tech-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:20px}.tech{padding:13px;border:1px solid var(--line);border-radius:13px;display:flex;justify-content:space-between;align-items:center;font:600 11px 'IBM Plex Mono',monospace}.tech span{color:var(--muted);font-size:9px}.tech.active{border-color:color-mix(in srgb,var(--cyan) 45%,transparent);box-shadow:0 0 24px var(--glow)}
+
+    /* finale */
+    .finale{text-align:center}.memory-lines{display:grid;gap:8px;margin:0 auto 38px;width:min(820px,100%)}.memory-line{font-size:clamp(24px,4.3vw,62px);line-height:1.06;letter-spacing:-.055em;color:var(--muted);font-weight:600}.memory-line:last-child{color:var(--text);font-size:clamp(45px,7vw,96px)}.memory-line:last-child b{color:var(--cyan)}.closing{font-size:clamp(17px,2vw,26px);max-width:850px;margin:0 auto;color:var(--muted);line-height:1.35}
+
+    .footnote{font:500 10px/1.45 'IBM Plex Mono',monospace;color:var(--muted);margin-top:22px;max-width:900px}
+    @media (max-width:800px){
+      .slide{align-items:start;overflow-y:auto;padding:58px 20px 96px}.frame{margin:auto 0}.counter{top:18px}.hero-copy,.profile-layout,.council,.battle,.magic-layout,.trade-layout{grid-template-columns:1fr}.crystal{display:none}.filter-grid{grid-template-columns:1fr 1fr}.signal-grid{grid-template-columns:1fr 1fr}.architecture{grid-template-columns:1fr 1fr}.arch-node:not(:last-child):after{display:none}.tech-strip{grid-template-columns:1fr 1fr}.domain-shift{height:290px}.sponsors{margin-top:30px}.controls{max-width:calc(100% - 24px)}.dots{display:none}.verdict{justify-content:flex-start}.council{gap:14px}.chat{grid-template-columns:1fr}.battle{gap:14px}.boss-card{display:none}.memory-panel{min-height:260px}.filter-card{padding:15px}.filter-icon{margin-bottom:16px}
+    }
+    @media (max-width:430px){.filter-grid{gap:8px}.filter-card h3{font-size:15px}.stat{grid-template-columns:90px 1fr 24px}.signal{min-height:94px;padding:12px}.architecture{grid-template-columns:repeat(2,1fr)}.arch-node{min-height:100px}.tech-strip{grid-template-columns:1fr}.slide{padding-top:54px}}
+    @media (prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.001ms!important}}
+  </style>
+</head>
+<body>
+  <main class="deck" aria-label="Taste OS hackathon pitch deck">
+    <div class="counter"><span id="current">01</span> / 10</div>
+
+    <section class="slide active" aria-label="Opening">
+      <div class="frame">
+        <div class="eyebrow">Decision intelligence, personalized</div>
+        <div class="hero-copy">
+          <div>
+            <h1>Taste <span class="accent">OS</span></h1>
+            <p class="hero-line"><span>The internet helps you search.</span>Taste OS helps you decide.</p>
+          </div>
+          <div class="crystal" aria-hidden="true">
+            <div class="orbit"></div>
+            <svg viewBox="0 0 240 240"><defs><linearGradient id="gem" x1="0" x2="1" y1="0" y2="1"><stop stop-color="var(--cyan)" stop-opacity=".9"/><stop offset="1" stop-color="var(--violet)" stop-opacity=".55"/></linearGradient></defs><path d="M120 38 188 80 174 164 120 204 66 164 52 80Z" fill="url(#gem)" fill-opacity=".12" stroke="var(--cyan)" stroke-width="2"/><path d="m52 80 68 22 68-22M120 102v102M66 164l54-62 54 62M120 38v64" fill="none" stroke="var(--cyan)" stroke-opacity=".62"/></svg>
+          </div>
+        </div>
+        <p class="lead" style="margin-top:32px">Your preferences should not reset every time you search.</p>
+        <div class="sponsors"><span>ZooWork</span><span>Tavily</span><span>Moss</span><span>BAND</span></div>
+      </div>
+    </section>
+
+    <section class="slide" aria-label="The problem">
+      <div class="frame">
+        <div class="topline"><div class="eyebrow">The problem</div><div class="level">DECISION LEVEL <b>01</b></div></div>
+        <h2>Every decision starts from <span class="red">zero.</span></h2>
+        <div class="filter-grid">
+          <article class="filter-card"><div class="filter-icon"><svg viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6L5 8Z M8 8V6a4 4 0 0 1 8 0v2"/></svg></div><h3>Backpack</h3><div class="filter-row"></div><div class="filter-row"></div><div class="filter-row"></div></article>
+          <article class="filter-card"><div class="filter-icon"><svg viewBox="0 0 24 24"><path d="M4 20V5h16v15M4 9h16M8 9V5M16 9V5M8 13h2M14 13h2M8 17h2M14 17h2"/></svg></div><h3>Hotel</h3><div class="filter-row"></div><div class="filter-row"></div><div class="filter-row"></div></article>
+          <article class="filter-card"><div class="filter-icon"><svg viewBox="0 0 24 24"><path d="m3 11 9-7 9 7v9H3Z M9 20v-6h6v6"/></svg></div><h3>Apartment</h3><div class="filter-row"></div><div class="filter-row"></div><div class="filter-row"></div></article>
+          <article class="filter-card"><div class="filter-icon"><svg viewBox="0 0 24 24"><path d="M4 7h16v13H4Z M9 7V4h6v3M4 12h16M10 12v2h4v-2"/></svg></div><h3>Accountant</h3><div class="filter-row"></div><div class="filter-row"></div><div class="filter-row"></div></article>
+        </div>
+        <div class="verdict"><div class="xmark">×</div><span>None of them know <span class="accent">you.</span></span></div>
+      </div>
+    </section>
+
+    <section class="slide" aria-label="Taste DNA profile">
+      <div class="frame">
+        <div class="topline"><div class="eyebrow">Taste DNA</div><div class="level">MEMORY <b>UNLOCKED</b></div></div>
+        <div class="profile-layout">
+          <article class="profile-card glass">
+            <div class="profile-head"><div><h3>Your preference profile</h3><p class="footnote" style="margin:0">Editable, explainable, and yours to correct.</p></div><div class="taste-score">87<small>TASTE LEVEL</small></div></div>
+            <div class="stat"><span>Minimalism</span><div class="stat-track"><div class="stat-fill" style="--w:88%"></div></div><span class="stat-value">88</span></div>
+            <div class="stat"><span>Quality</span><div class="stat-track"><div class="stat-fill" style="--w:95%"></div></div><span class="stat-value">95</span></div>
+            <div class="stat"><span>Durability</span><div class="stat-track"><div class="stat-fill" style="--w:82%"></div></div><span class="stat-value">82</span></div>
+            <div class="stat"><span>Eco friendly</span><div class="stat-track"><div class="stat-fill" style="--w:69%"></div></div><span class="stat-value">69</span></div>
+            <div class="stat"><span>Luxury</span><div class="stat-track"><div class="stat-fill" style="--w:38%"></div></div><span class="stat-value">38</span></div>
+            <div class="stat"><span>Trendiness</span><div class="stat-track"><div class="stat-fill" style="--w:24%"></div></div><span class="stat-value">24</span></div>
+          </article>
+          <aside class="memory-panel glass">
+            <div><div class="eyebrow">Learned from</div><h3>Brands become clues,<br>not assumptions.</h3></div>
+            <div class="brands" aria-label="Editable source brands"><button class="brand">Patagonia</button><button class="brand">Muji</button><button class="brand">Aesop</button><button class="brand">Away</button></div>
+            <div class="unlock"><span class="pulse"></span>Persistent preference memory active</div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" aria-label="Decision signals">
+      <div class="frame">
+        <div class="topline"><div class="eyebrow">Decision signals</div><div class="level">SELECT <b id="selectCount">5</b> / 8</div></div>
+        <h2>Say what you need.<br><span class="accent">We build the rubric.</span></h2>
+        <div class="query glass"><span class="accent">›</span><span>Find me a backpack for work and travel under $200</span><span class="cursor"></span></div>
+        <div class="signal-grid" id="signals">
+          <button class="signal selected"><span class="num">01 · MEMORY</span><b>Durable</b><span class="check">✓</span></button>
+          <button class="signal selected"><span class="num">02 · MEMORY</span><b>Minimal</b><span class="check">✓</span></button>
+          <button class="signal selected"><span class="num">03 · REQUEST</span><b>Travel friendly</b><span class="check">✓</span></button>
+          <button class="signal"><span class="num">04 · RESEARCH</span><b>Water resistant</b><span class="check">✓</span></button>
+          <button class="signal"><span class="num">05 · RESEARCH</span><b>Warranty</b><span class="check">✓</span></button>
+          <button class="signal selected"><span class="num">06 · REQUEST</span><b>Comfortable</b><span class="check">✓</span></button>
+          <button class="signal selected"><span class="num">07 · MEMORY</span><b>Organized</b><span class="check">✓</span></button>
+          <button class="signal"><span class="num">08 · MEMORY</span><b>Premium materials</b><span class="check">✓</span></button>
+        </div>
+        <div class="selection-status">Click a signal to change the mission</div>
+      </div>
+    </section>
+
+    <section class="slide" aria-label="Expert council">
+      <div class="frame">
+        <div class="topline"><div class="eyebrow">The wow moment</div><div class="level">EXPERT COUNCIL <b>ONLINE</b></div></div>
+        <h2>Five specialists.<br><span class="accent">One decision.</span></h2>
+        <div class="council">
+          <div class="agent-list glass">
+            <div class="agent" style="--agent:var(--green)"><div class="avatar"><svg viewBox="0 0 24 24"><path d="M4 19c2-3 4.5-4 8-4s6 1 8 4M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"/></svg></div><div class="agent-info"><div class="agent-name">Style expert</div><div class="thinking">Comparing visual language</div></div></div>
+            <div class="agent" style="--agent:var(--violet)"><div class="avatar"><svg viewBox="0 0 24 24"><path d="M4 20 20 4M8 4h12v12M4 8v12h12"/></svg></div><div class="agent-info"><div class="agent-name">Travel expert</div><div class="thinking">Checking carry-on fit</div></div></div>
+            <div class="agent" style="--agent:var(--cyan)"><div class="avatar"><svg viewBox="0 0 24 24"><path d="M12 3 20 7v5c0 5-3 8-8 10-5-2-8-5-8-10V7Z M8 12l3 3 5-6"/></svg></div><div class="agent-info"><div class="agent-name">Durability expert</div><div class="thinking">Reading material evidence</div></div></div>
+            <div class="agent" style="--agent:var(--amber)"><div class="avatar"><svg viewBox="0 0 24 24"><path d="M12 3v18M17 7.5c0-2-2-3-5-3s-5 1.2-5 3 1.5 3 5 3 5 1.2 5 3-2 3-5 3-5-1-5-3"/></svg></div><div class="agent-info"><div class="agent-name">Budget expert</div><div class="thinking">Verifying price ceiling</div></div></div>
+            <div class="agent" style="--agent:var(--text)"><div class="avatar"><svg viewBox="0 0 24 24"><path d="M12 3a4 4 0 0 0-4 4v2a4 4 0 0 0 0 8v2h8v-2a4 4 0 0 0 0-8V7a4 4 0 0 0-4-4Z M8 10h8M8 15h8"/></svg></div><div class="agent-info"><div class="agent-name">Memory expert</div><div class="thinking">Retrieving Taste DNA</div></div></div>
+          </div>
+          <div class="chat">
+            <div class="bubble"><small>MEMORY EXPERT · 00:02</small><strong>Patagonia</strong> aligns with durability and low-flash branding.</div>
+            <div class="bubble"><small>BUDGET EXPERT · 00:03</small>Peak Design is compelling, but <span class="red">exceeds the hard cap.</span></div>
+            <div class="bubble"><small>TRAVEL EXPERT · 00:04</small><strong>Aer</strong> has the strongest work-to-travel organization.</div>
+            <div class="bubble"><small>STYLE EXPERT · 00:05</small>Bellroy closely matches the user's <span class="violet">minimal aesthetic.</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" aria-label="Ranked finalists">
+      <div class="frame">
+        <div class="topline"><div class="eyebrow">Finalists</div><div class="level">BOSS BATTLE <b>COMPLETE</b></div></div>
+        <h2>Not a list. A <span class="accent">reasoned winner.</span></h2>
+        <div class="battle">
+          <div class="board glass">
+            <div class="rank-row"><span class="rank">#1</span><div class="product">Aer <small>Best overall match</small></div><div class="score">94</div></div>
+            <div class="rank-row"><span class="rank">#2</span><div class="product">Peak Design <small>Premium, over budget</small></div><div class="score">91</div></div>
+            <div class="rank-row"><span class="rank">#3</span><div class="product">Bellroy <small>Strongest aesthetic fit</small></div><div class="score">88</div></div>
+            <div class="rank-row"><span class="rank">#4</span><div class="product">Patagonia <small>Durable, less organized</small></div><div class="score">84</div></div>
+          </div>
+          <aside class="boss-card glass">
+            <div class="eyebrow">Why Aer wins</div>
+            <svg class="radar" viewBox="0 0 220 190" aria-label="Aer score profile"><polygon class="gridpoly" points="110,15 196,78 163,175 57,175 24,78"/><polygon class="gridpoly" points="110,43 169,86 146,153 74,153 51,86"/><polygon class="gridpoly" points="110,70 142,94 130,130 90,130 78,94"/><path class="axis" d="M110 15v160M24 78l139 97M196 78 57 175M24 78h172M110 15 57 175M110 15l53 160"/><polygon class="data" points="110,24 181,82 150,156 68,161 39,82"/></svg>
+            <div class="reason plus"><span>+</span><span>Built for durable daily use</span></div><div class="reason plus"><span>+</span><span>Fits your minimalist taste</span></div><div class="reason plus"><span>+</span><span>Exceptional travel organization</span></div><div class="reason minus"><span>−</span><span>Near the top of your budget</span></div>
+          </aside>
+        </div>
+        <p class="footnote">Illustrative demo candidates. In live mode, scores are backed by extracted evidence. Missing evidence earns no points.</p>
+      </div>
+    </section>
+
+    <section class="slide" aria-label="Cross-domain memory">
+      <div class="frame">
+        <div class="topline"><div class="eyebrow">The magic</div><div class="level">CROSS-DOMAIN <b>TRANSFER</b></div></div>
+        <div class="magic-layout">
+          <div class="domain-shift">
+            <div class="search-card backpack glass"><div class="search-type">Completed quest</div><div class="search-text">Find me a backpack.</div></div>
+            <div class="search-card hotel glass"><div class="search-type"><span class="green">●</span> New category · memory recovered</div><div class="search-text">Find me a hotel for a quiet weekend under $250.</div><div class="memory-chips"><span class="chip">Quiet</span><span class="chip">Clean design</span><span class="chip">High quality</span><span class="chip">Walkable</span><span class="chip">Great service</span></div></div>
+          </div>
+          <div class="magic-copy"><h2>New category.<br><span class="accent">Same person.</span></h2><p class="lead">Taste OS remembers the person while adapting to the decision.</p><ul class="zero-list"><li>No preference survey</li><li>No fixed filter maze</li><li>No starting over</li></ul></div>
+        </div>
+        <p class="footnote">Cross-domain preference transfer is the product hypothesis. The prototype demonstrates the mechanism; effectiveness is the next user test.</p>
+      </div>
+    </section>
+
+    <section class="slide" aria-label="Interactive tradeoff explorer">
+      <div class="frame">
+        <div class="topline"><div class="eyebrow">Live tradeoff explorer</div><div class="level">RANKING <b>RECALCULATES</b></div></div>
+        <div class="trade-layout">
+          <section class="trade-panel glass">
+            <h2 style="font-size:clamp(33px,4.2vw,58px)">Change one priority.<br><span class="accent">Watch the answer change.</span></h2>
+            <div class="trade-labels"><span>QUALITY</span><span>PRICE</span></div>
+            <input class="range" id="tradeRange" type="range" min="0" max="100" value="38" aria-label="Balance quality and price" />
+            <div class="trade-readout" id="tradeReadout">62 : 38</div><div class="footnote" style="margin-top:0">QUALITY / PRICE WEIGHT</div>
+          </section>
+          <div class="board live glass" id="liveBoard">
+            <div class="rank-row" data-name="Aer" data-quality="96" data-price="72"><span class="rank">#1</span><div class="product">Aer <small>Balanced champion</small></div><div class="live-score">87</div></div>
+            <div class="rank-row" data-name="Patagonia" data-quality="88" data-price="91"><span class="rank">#2</span><div class="product">Patagonia <small>Value challenger</small></div><div class="live-score">89</div></div>
+            <div class="rank-row" data-name="Bellroy" data-quality="90" data-price="79"><span class="rank">#3</span><div class="product">Bellroy <small>Design specialist</small></div><div class="live-score">86</div></div>
+            <div class="rank-row" data-name="Peak Design" data-quality="98" data-price="55"><span class="rank">#4</span><div class="product">Peak Design <small>Quality champion</small></div><div class="live-score">82</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" aria-label="Technology architecture">
+      <div class="frame">
+        <div class="topline"><div class="eyebrow">Under the hood</div><div class="level">SYSTEM <b>READY</b></div></div>
+        <h2>One clean decision loop.</h2>
+        <div class="architecture">
+          <div class="arch-node"><svg viewBox="0 0 24 24"><path d="M12 3a4 4 0 0 0-4 4v2a4 4 0 0 0 0 8v2h8v-2a4 4 0 0 0 0-8V7a4 4 0 0 0-4-4Z M8 10h8M8 15h8"/></svg><b>Memory</b><small>MOSS + D1</small></div>
+          <div class="arch-node"><svg viewBox="0 0 24 24"><path d="m4 12 4-4 4 4 4-4 4 4M4 17h16M8 8V4M16 8V4"/></svg><b>Workflow</b><small>ZOOWORK</small></div>
+          <div class="arch-node"><svg viewBox="0 0 24 24"><circle cx="7" cy="8" r="3"/><circle cx="17" cy="8" r="3"/><path d="M2 20c0-4 2-6 5-6s5 2 5 6M12 20c0-4 2-6 5-6s5 2 5 6"/></svg><b>Council</b><small>BAND</small></div>
+          <div class="arch-node"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg><b>Research</b><small>TAVILY</small></div>
+          <div class="arch-node"><svg viewBox="0 0 24 24"><path d="M5 4h14v16H5Z M8 9h8M8 13h8M8 17h5"/></svg><b>Evidence</b><small>SOURCE-BACKED</small></div>
+          <div class="arch-node"><svg viewBox="0 0 24 24"><path d="m4 16 5-5 4 4 7-8M16 7h4v4"/></svg><b>Decision</b><small>VISIBLE SCORE</small></div>
+        </div>
+        <div class="tech-strip"><div class="tech active">ZooWork <span>orchestrates</span></div><div class="tech active">Tavily <span>researches</span></div><div class="tech active">Moss <span>remembers</span></div><div class="tech active">BAND <span>coordinates</span></div></div>
+        <p class="footnote">Browser-side scoring recalculates instantly when priorities change. Explicit instructions always override remembered taste.</p>
+      </div>
+    </section>
+
+    <section class="slide" aria-label="Closing vision">
+      <div class="frame finale">
+        <div class="eyebrow">The vision</div>
+        <div class="memory-lines"><div class="memory-line">Google remembers pages.</div><div class="memory-line">Spotify remembers songs.</div><div class="memory-line">Netflix remembers movies.</div><div class="memory-line">Taste OS remembers <b>you.</b></div></div>
+        <p class="closing">Search engines help you find what is available. <strong>Taste OS helps you choose what is right for you.</strong></p>
+        <div class="sponsors" style="justify-content:center"><span>Remember</span><span>Research</span><span>Rank</span></div>
+      </div>
+    </section>
+
+    <nav class="controls" aria-label="Slide navigation">
+      <button class="navbtn" id="prev" aria-label="Previous slide"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button>
+      <div class="dots" id="dots" aria-label="Slide picker"></div>
+      <button class="navbtn" id="next" aria-label="Next slide"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></button>
+    </nav>
+  </main>
+  <script>
+    (function(){
+      var slides=Array.prototype.slice.call(document.querySelectorAll('.slide'));
+      var dotsWrap=document.getElementById('dots'), current=0;
+      slides.forEach(function(_,i){var b=document.createElement('button');b.className='dot'+(i===0?' active':'');b.setAttribute('aria-label','Go to slide '+(i+1));b.addEventListener('click',function(){show(i)});dotsWrap.appendChild(b)});
+      var dots=Array.prototype.slice.call(document.querySelectorAll('.dot'));
+      function show(n){current=Math.max(0,Math.min(slides.length-1,n));slides.forEach(function(s,i){s.classList.toggle('active',i===current);s.classList.toggle('before',i<current);s.inert=i!==current;s.setAttribute('aria-hidden',i===current?'false':'true')});dots.forEach(function(d,i){d.classList.toggle('active',i===current)});document.getElementById('current').textContent=String(current+1).padStart(2,'0');document.getElementById('prev').disabled=current===0;document.getElementById('next').disabled=current===slides.length-1;}
+      document.getElementById('prev').addEventListener('click',function(){show(current-1)});document.getElementById('next').addEventListener('click',function(){show(current+1)});
+      document.addEventListener('keydown',function(e){if(/^(INPUT|BUTTON)$/.test(e.target.tagName))return;if(['ArrowRight','PageDown',' '].indexOf(e.key)>-1){e.preventDefault();show(current+1)}if(['ArrowLeft','PageUp'].indexOf(e.key)>-1){e.preventDefault();show(current-1)}if(e.key==='Home')show(0);if(e.key==='End')show(slides.length-1)});
+      var touchX=0;document.addEventListener('touchstart',function(e){touchX=e.changedTouches[0].screenX},{passive:true});document.addEventListener('touchend',function(e){var d=e.changedTouches[0].screenX-touchX;if(Math.abs(d)>55)show(current+(d<0?1:-1))},{passive:true});
+      document.querySelectorAll('.brand').forEach(function(b){b.addEventListener('click',function(){b.classList.toggle('off')})});
+      document.querySelectorAll('.signal').forEach(function(b){var mark=b.querySelector('.check');mark.setAttribute('aria-hidden','true');b.setAttribute('aria-pressed',b.classList.contains('selected')?'true':'false');b.addEventListener('click',function(){b.classList.toggle('selected');b.setAttribute('aria-pressed',b.classList.contains('selected')?'true':'false');document.getElementById('selectCount').textContent=document.querySelectorAll('.signal.selected').length})});
+      var range=document.getElementById('tradeRange'), board=document.getElementById('liveBoard'), readout=document.getElementById('tradeReadout');
+      function rank(){var price=Number(range.value),quality=100-price;readout.textContent=quality+' : '+price;var rows=Array.prototype.slice.call(board.querySelectorAll('.rank-row'));rows.forEach(function(r){var s=Math.round((Number(r.dataset.quality)*quality+Number(r.dataset.price)*price)/100);r.querySelector('.live-score').textContent=s;r.score=s});rows.sort(function(a,b){return b.score-a.score});rows.forEach(function(r,i){r.querySelector('.rank').textContent='#'+(i+1);board.appendChild(r)})}
+      range.addEventListener('input',rank);rank();show(0);
+    })();
+  </script>
+</body>
+</html>
